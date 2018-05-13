@@ -5,6 +5,8 @@ RUN apk --update add \
     openssl \
     bash \
     openssh \
+    curl \
+    wget \
     git
 
 CMD [ "node" ]
