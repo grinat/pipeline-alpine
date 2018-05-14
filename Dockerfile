@@ -7,6 +7,7 @@ RUN apk --update add \
     openssh \
     curl \
     wget \
-    git
+    git \
+    nano
 
 CMD [ "node" ]
