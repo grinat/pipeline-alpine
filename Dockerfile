@@ -8,7 +8,8 @@ RUN apk --update add \
     curl \
     wget \
     git \
-    nano
+    nano \
+    zip
 
 # added chromium
 # chromeOptions: {
