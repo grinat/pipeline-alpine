@@ -66,6 +66,7 @@ pipelines:
 ## Paths
 
 chromium Driver Path - /usr/bin/chromedriver
+
 chromium Path - /usr/bin/chromium-browser
 
 ## Nightwatch.js
