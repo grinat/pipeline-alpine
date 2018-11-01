@@ -5,7 +5,33 @@ Usage in gitlab, add in gitlab-ci.yml:
 ```
 image: grinat0/pipeline-alpine:latest
 
-... jobs code ...
+# example job
+stages:
+- test
+- production
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+  - node_modules/
+
+test:
+  only:
+  - master
+  stage: test
+  script:
+  - mkdir -p dist
+  - npm install
+  - npm run e2e-headless-ci
+
+production:
+  only:
+  - master
+  stage: production
+  script:
+  - mkdir -p dist
+  - npm install
+  - npm run build
 ```
 
 Usage in bitbucket, add in bitbucket-pipelines.yml:
@@ -13,8 +39,28 @@ Usage in bitbucket, add in bitbucket-pipelines.yml:
 ```
 image: grinat0/pipeline-alpine:latest
 
+# example job
 pipelines:
-... jobs code ...
+  branches:
+    master:
+      - step:
+          caches:
+            - node
+          deployment: test
+          name: Test
+          script:
+            - mkdir -p dist
+            - npm install
+            - npm run e2e-headless-ci
+      - step:
+          caches:
+            - node
+          deployment: production
+          name: Build
+          script:
+            - mkdir -p dist
+            - npm install
+            - npm run build
 ```
 
 ## Paths
