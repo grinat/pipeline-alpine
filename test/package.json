@@ -8,6 +8,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "node-sass": "^4.9.0",
     "cross-spawn": "^6.0.5",
     "express": "^4.16.4",
     "nightwatch": "^0.9.12",

@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM node:10-alpine
 
 # Update apk and install jdk for selenium
 RUN apk -U add openjdk8-jre
