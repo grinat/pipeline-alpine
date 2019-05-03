@@ -1,38 +1,10 @@
-FROM node:9-alpine
+FROM node:12-alpine
 
-RUN apk --update add \
-    sudo \
-    openssl \
-    bash \
-    openssh \
-    curl \
-    wget \
-    git \
-    nano \
-    zip
-
-# added chromium
-# chromeOptions: {
-#            args: [
-#              '--no-sandbox',
-#              '--headless',
-#              '--disable-gpu',
-#              '--disable-translate',
-#              '--disable-extensions'
-#            ],
-#            binary: '/usr/bin/chromium-browser'
-#          }
-
-# Update apk repositories
-RUN echo "http://dl-2.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories
-RUN echo "http://dl-2.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
-RUN echo "http://dl-2.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
-
-# selenium
-RUN apk --update add openjdk8-jre
+# Update apk and install jdk for selenium
+RUN apk -U add openjdk8-jre
 
 # Install chromium
-RUN apk -U --no-cache \
+RUN apk --no-cache \
 	--allow-untrusted add \
     zlib-dev \
     chromium \
@@ -45,17 +17,45 @@ RUN apk -U --no-cache \
     mesa-dri-swrast \
     grep \
     udev \
-    && apk del --purge --force linux-headers binutils-gold gnupg zlib-dev libc-utils \
-    && rm -rf /var/lib/apt/lists/* \
-    /var/cache/apk/* \
-    /usr/share/man \
-    /tmp/* \
-    /usr/lib/node_modules/npm/man \
-    /usr/lib/node_modules/npm/doc \
-    /usr/lib/node_modules/npm/html \
-    /usr/lib/node_modules/npm/scripts
+    && apk del --purge --force linux-headers binutils-gold gnupg zlib-dev libc-utils
 
 ENV CHROME_BIN=/usr/bin/chromium-browser
 ENV CHROME_PATH=/usr/lib/chromium/
+ENV CHROME_DRIVER_PATH=/usr/bin/chromedriver
+
+# For run chromium:
+# chromeOptions: {
+#            args: [
+#              '--no-sandbox',
+#              '--headless',
+#              '--disable-gpu',
+#              '--disable-translate',
+#              '--disable-extensions'
+#            ],
+#            binary: '/usr/bin/chromium-browser'
+#          }
+
+# install additionall apps
+RUN apk --no-cache add \
+    sudo \
+    openssl \
+    bash \
+    openssh \
+    curl \
+    wget \
+    git \
+    nano \
+    zip
+
+RUN rm -rf /var/lib/apt/lists/* \
+    /var/cache/apk/* \
+    /usr/share/man/* \
+    /tmp/*
+
+# Testing node, selenium, chrome, nigthwatch
+# https://peter.sh/experiments/chromium-command-line-switches/
+# RUN /usr/bin/chromium-browser --dump-dom --headless --disable-gpu --no-sandbox https://chromium.org
+COPY ./test /test
+RUN cd /test && npm i && npm run e2e && rm -rf /test
 
 CMD [ "node" ]

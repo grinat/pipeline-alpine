@@ -1,0 +1,16 @@
+{
+  "name": "test",
+  "description": "Testing suite for chrome headless+selenium+nightwatch",
+  "author": "Gabdrashitov Rinat",
+  "private": true,
+  "scripts": {
+    "e2e": "node test/e2e/runner.js --env chrome-headless"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "cross-spawn": "^6.0.5",
+    "express": "^4.16.4",
+    "nightwatch": "^0.9.12",
+    "selenium-server": "^3.0.1"
+  }
+}
